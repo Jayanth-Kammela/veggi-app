@@ -10,6 +10,7 @@ const Products = () => {
     return state;
   });
 
+
   useEffect(() => {
     dispatch(GetProduct());
   }, []);
@@ -25,27 +26,31 @@ const Products = () => {
   };
 
   const forItem = ({ item }) => {
-    return (
-      <View style={[styles.card, { width: cardWidth, height: cardHeight }]}>
-        <Image source={{ uri: item.images[0] }} style={styles.image} />
-        <Text style={styles.productName}>{item.productName}</Text>
-        <Text style={styles.quantity}>{item.quantity}kg</Text>
-        <View style={styles.XDiscontainer}>
-          <Text style={styles.strike}>RS100 </Text>
-          <Text style={styles.discount}>20% off</Text>
+    if (item.images&& item.images.length>0) {
+      return (
+        <View style={[styles.card, { width: cardWidth, height: cardHeight }]}>
+          <Image source={{ uri: item.images[0] }} style={styles.image} />
+          <Text style={styles.productName}>{item.productName}</Text>
+          <Text style={styles.quantity}>{item.quantity}kg</Text>
+          <View style={styles.XDiscontainer}>
+            <Text style={styles.strike}>RS100 </Text>
+            <Text style={styles.discount}>20% off</Text>
+          </View>
+          <Text style={styles.price}>₹{item.price}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => forPress(item._id)}>
+            <Text style={styles.buttonTxt}>+</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.price}>₹{item.price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => forPress(item._id)}>
-          <Text style={styles.buttonTxt}>+</Text>
-        </TouchableOpacity>
-      </View>
-    )
+      )
+    }else{
+      return null
+    }
   }
 
   return (
     <React.Fragment>
-      {wholeData.data && wholeData.data.length > 0 ? <FlatList
-        data={wholeData.data.slice(0, 6)}
+      {wholeData.data.whole && wholeData.data.whole.length > 0 ? <FlatList
+        data={wholeData.data.whole.slice(0, 6)}
         horizontal
         keyExtractor={(item) => item._id}
         renderItem={forItem} />

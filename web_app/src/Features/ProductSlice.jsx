@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { GetProduct, GetProductById } from "../Services/Services"
+import { GetProduct, GetProductById,GetComments } from "../Services/Services"
 
 const ProductSlice = createSlice({
   name: 'products',
   initialState: {
     data: [],
+    comments: [],
     loading: false,
   },
   extraReducers(builder) {
@@ -28,6 +29,17 @@ const ProductSlice = createSlice({
         state.data = action.payload;
       }),
       builder.addCase(GetProductById.rejected, (state, action) => {
+        state.loading = true;
+      })
+
+      builder.addCase(GetComments.pending, (state, action) => {
+        state.loading = true;
+      }),
+      builder.addCase(GetComments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = action.payload;
+      }),
+      builder.addCase(GetComments.rejected, (state, action) => {
         state.loading = true;
       })
   }

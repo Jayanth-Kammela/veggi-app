@@ -17,7 +17,7 @@ const getAllCommentsForProduct = async (req, res) => {
     const { id } = req.params
     try {
         const comments = await Comment.find({ productId: id }).populate('user','email')
-        return res.status(200).json(comments);
+        return res.status(200).json({comments:comments});
     } catch (error) {
         return res.status(500).json(error);
     }

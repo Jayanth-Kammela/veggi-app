@@ -13,7 +13,7 @@ const PostProduct = async (req, res, next) => {
 const GetProduct = async (req, res, next) => {
     try {
         const data = await Product.find({})
-        return res.status(200).json(data)
+        return res.status(200).json({whole:data})
     } catch (error) {
         console.log(error);
     }

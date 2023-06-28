@@ -6,7 +6,6 @@ import Stack from './src/Navigation/Stack'
 
 const App = () => {
 
-
   return (
     // <React.Fragment>
     <Provider store={Store}>

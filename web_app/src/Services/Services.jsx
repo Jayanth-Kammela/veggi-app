@@ -23,3 +23,15 @@ export const GetProductById = createAsyncThunk('ecom/getId', async (id) => {
         console.log(error);
     }
 })
+
+export const GetComments = createAsyncThunk('ecom/getComments', async (id) => {
+    try {
+        // console.log(id);
+        const wholeData = await axios.get(`${url}/getcomment/${id}`);
+        return wholeData.data.comments
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+

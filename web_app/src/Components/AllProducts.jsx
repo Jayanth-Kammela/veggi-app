@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetProduct } from '../Services/Services';
-import { useNavigation,useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const AllProducts = () => {
 
@@ -15,7 +15,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     dispatch(GetProduct());
-  }, [dispatch,navigation]);
+  }, [dispatch, navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -34,28 +34,34 @@ const AllProducts = () => {
     console.log(id);
   };
 
-  const forItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('product', { Id: item._id })}>
-      <View style={[styles.card, { width: cardWidth, height: cardHeight }]}>
-        <Image source={{ uri: item.images[0] }} style={styles.image} />
-        <Text style={styles.productName}>{item.productName}</Text>
-        <Text style={styles.quantity}>{item.quantity}kg</Text>
-        <View style={styles.XDiscontainer}>
-          <Text style={styles.strike}>RS100 </Text>
-          <Text style={styles.discount}> 20% off</Text>
-        </View>
-        <Text style={styles.price}>₹{item.price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => forPress(item._id)}>
-          <Text style={styles.buttonTxt}>+</Text>
+  const forItem = ({ item }) => {
+    if (item.images && item.images.length > 0) {
+      return (
+        <TouchableOpacity onPress={() => navigation.navigate('product', { Id: item._id })}>
+          <View style={[styles.card, { width: cardWidth, height: cardHeight }]}>
+             <Image source={{ uri: item.images[0] }} style={styles.image} />
+            <Text style={styles.productName}>{item.productName}</Text>
+            <Text style={styles.quantity}>{item.quantity}kg</Text>
+            <View style={styles.XDiscontainer}>
+              <Text style={styles.strike}>RS100 </Text>
+              <Text style={styles.discount}> 20% off</Text>
+            </View>
+            <Text style={styles.price}>₹{item.price}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => forPress(item._id)}>
+              <Text style={styles.buttonTxt}>+</Text>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  );
+        )
+    }else{
+      return null
+    }
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={wholeData.data}
+        data={wholeData.data.whole}
         keyExtractor={(item) => item._id}
         renderItem={forItem}
         numColumns={2}
