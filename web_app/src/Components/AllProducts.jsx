@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetProduct } from '../Services/Services';
+import { GetProduct, AddCart } from '../Services/Services';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const AllProducts = () => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [count, setCount] = useState(1)
 
   const wholeData = useSelector((state) => {
     return state;
@@ -30,16 +31,21 @@ const AllProducts = () => {
   const cardWidth = forSize ? Math.floor(windowWidth / 2) - 28 : Math.floor(windowWidth / 2) - 18;
   const cardHeight = forSize ? (cardWidth / 560) * 500 : (cardWidth / 240) * 300;
 
-  const forPress = (id) => {
-    console.log(id);
-  };
+  const addCart = async (id) => {
+    try {
+      dispatch(AddCart({ productId: id, productquantity: count }))
+      // console.log({ productId: Id, productquantity: count });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const forItem = ({ item }) => {
     if (item.images && item.images.length > 0) {
       return (
         <TouchableOpacity onPress={() => navigation.navigate('product', { Id: item._id })}>
           <View style={[styles.card, { width: cardWidth, height: cardHeight }]}>
-             <Image source={{ uri: item.images[0] }} style={styles.image} />
+            <Image source={{ uri: item.images[0] }} style={styles.image} />
             <Text style={styles.productName}>{item.productName}</Text>
             <Text style={styles.quantity}>{item.quantity}kg</Text>
             <View style={styles.XDiscontainer}>
@@ -47,13 +53,13 @@ const AllProducts = () => {
               <Text style={styles.discount}> 20% off</Text>
             </View>
             <Text style={styles.price}>₹{item.price}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => forPress(item._id)}>
+            <TouchableOpacity style={styles.button} onPress={() => addCart(item._id)}>
               <Text style={styles.buttonTxt}>+</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
-        )
-    }else{
+      )
+    } else {
       return null
     }
   }

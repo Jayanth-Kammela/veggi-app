@@ -2,27 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Dimensions, Image, useWindowDimensions, TouchableOpacity, ScrollView, TextInput, SafeAreaView } from 'react-native'
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetProductById, GetComments } from '../Services/Services';
+import { GetProductById, GetComments, AddCart } from '../Services/Services';
 import { useFocusEffect } from '@react-navigation/native';
 import IconXC from 'react-native-vector-icons/Feather';
-import { ListItem } from '@rneui/themed';
+import { ListItem, Divider } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/Entypo';
 import IconPost from 'react-native-vector-icons/Ionicons';
 import { Button } from '@rneui/themed';
-import { Rating } from '@rneui/themed';
 
 const SingleProduct = () => {
+
+    const route = useRoute()
+    const { Id } = route.params;
+    // console.log(typeof Id);
 
     const [scroll, setScroll] = useState(0);
     const [count, setCount] = useState(1)
     const [expanded, setExpanded] = useState(false);
-    const [review, setReview] = useState({ rating: 1, comment: '', });
+    const [review, setReview] = useState({ rating: 1, comment: '', productId: Id });
 
     const windowWidth = useWindowDimensions().width;
-
-    const route = useRoute()
-    const { Id } = route.params;
-    // console.log(Id);
 
     const dispatch = useDispatch();
 
@@ -33,10 +32,6 @@ const SingleProduct = () => {
     const commentData = useSelector((state) => {
         return state;
     });
-
-    // commentData.comments.map((xd) => {
-    //     return (console.log(xd.user))
-    // })
 
     useEffect(() => {
         setScroll(0);
@@ -63,9 +58,18 @@ const SingleProduct = () => {
         setReview({ rating: value, comment: comment });
     };
 
-    const forPost = () => {
+    const forPost = async () => {
         console.log(review);
     };
+
+    const addCart = async () => {
+        try {
+            dispatch(AddCart({ productId: Id, productquantity: count }))
+            // console.log({ productId: Id, productquantity: count });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <React.Fragment>
@@ -112,7 +116,7 @@ const SingleProduct = () => {
                         <View style={styles.details}>
                             <Text style={styles.nestDetail}>Product Detail</Text>
                             <Text style={styles.productDetails}>{carddata.productDetails}</Text>
-                            <View style={{ borderColor: '#9BABB8', borderWidth: 0.4 }}></View>
+                            <Divider width={0.6} color={'#9BABB8'} />
                         </View>
 
                         <ListItem.Accordion
@@ -134,7 +138,7 @@ const SingleProduct = () => {
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <TextInput placeholder={`Add comment to ${carddata.productName}`} onChangeText={(text) => setReview({ ...review, comment: text })} style={styles.txtComment} />
-                                        {review.comment.length > 0 ? <IconPost name='send' size={30} onPress={forPost} style={{ marginLeft:8 }} /> : ''}
+                                        {review.comment.length > 0 ? <IconPost name='send' size={30} onPress={forPost} style={{ marginLeft: 8 }} /> : ''}
                                     </View>
 
                                     <View style={{ marginBottom: 8 }}>
@@ -161,9 +165,9 @@ const SingleProduct = () => {
 
                         </ListItem.Accordion>
 
-                        <View style={{ borderColor: '#9BABB8', borderWidth: 0.4 }}></View>
+                        <Divider width={0.6} color={'#9BABB8'} />
 
-                        {/* <View style={styles.btnGrp}>
+                        <View style={styles.btnGrp}>
                             <Button
                                 title="NEXT DAY"
                                 type="outline"
@@ -200,7 +204,7 @@ const SingleProduct = () => {
                         </View>
 
                         <View style={styles.btnBottom}>
-                            <Button
+                            <Button onPress={addCart}
                                 title="ADD TO BASKET"
                                 buttonStyle={{ backgroundColor: '#9DB2BF', borderRadius: 8 }}
                                 containerStyle={{
@@ -224,7 +228,7 @@ const SingleProduct = () => {
                                     marginHorizontal: 20,
                                 }}
                             />
-                        </View> */}
+                        </View>
 
                     </View>
                 </ScrollView>
