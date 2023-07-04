@@ -7,13 +7,13 @@ import Stack from './src/Navigation/Stack'
 const App = () => {
 
   return (
-    // <React.Fragment>
-    <Provider store={Store}>
-      <NavigationContainer>
-        <Stack/>
-      </NavigationContainer>
-    </Provider>
-    // </React.Fragment>
+    <React.Fragment>
+      <Provider store={Store}>
+        <NavigationContainer>
+          <Stack />
+        </NavigationContainer>
+      </Provider>
+    </React.Fragment>
   )
 }
 

@@ -14,7 +14,7 @@ const SingleProduct = () => {
 
     const route = useRoute()
     const { Id } = route.params;
-    // console.log(typeof Id);
+    // console.log(Id);
 
     const [scroll, setScroll] = useState(0);
     const [count, setCount] = useState(1)
