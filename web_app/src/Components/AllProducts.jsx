@@ -14,14 +14,10 @@ const AllProducts = () => {
     return state;
   });
 
-  useEffect(() => {
-    dispatch(GetProduct());
-  }, [dispatch, navigation]);
-
   useFocusEffect(
     React.useCallback(() => {
       dispatch(GetProduct());
-    }, [dispatch])
+    }, [dispatch,navigation])
   );
 
   const windowWidth = useWindowDimensions().width;

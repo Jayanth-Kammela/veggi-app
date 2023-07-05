@@ -6,7 +6,6 @@ const Explore = () => {
     <React.Fragment>
       <View>
         <Text>Explore</Text>
-        
       </View>
     </React.Fragment>
   )

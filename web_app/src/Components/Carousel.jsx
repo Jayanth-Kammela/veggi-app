@@ -13,7 +13,7 @@ const Carousel = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setScroll(scroll === images.length - 1 ? 0 : scroll + 1);
+      setScroll(scroll ? 0 : scroll + 1);
     }, 2000);
 
     return () => clearInterval(timer);
