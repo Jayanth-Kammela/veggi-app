@@ -3,8 +3,9 @@ const router = express.Router();
 const { PostProduct, GetProduct, GetProductById } = require('../Controllers/Product');
 const { postComment, updateCommentById, deleteCommentById, getAllCommentsForProduct } = require('../Controllers/Comment')
 const protectedRoute = require('../Middleware/Middleware')
-const { PostCart, GetCart, DeleteCart }=require('../Controllers/Cart')
+const { PostCart, GetCart, DeleteCart } = require('../Controllers/Cart')
 const { PractData } = require('../Controllers/Pract')
+const { PlaceOrder, GetOrder } = require('../Controllers/Order')
 
 
 // router.use(protectedRoute);
@@ -25,5 +26,9 @@ router.delete('/deletecart/:id', DeleteCart);
 
 //pract
 router.post('/pract', PractData);
+
+//order
+router.post('/placeorders', PlaceOrder);
+router.get('/getorders', GetOrder);
 
 module.exports = router

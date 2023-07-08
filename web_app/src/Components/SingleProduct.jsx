@@ -33,12 +33,12 @@ const SingleProduct = () => {
         return state;
     });
 
-    // useEffect(() => {
-    //     setScroll(0);
-    //     const { Id } = route.params;
-    //     dispatch(GetProductById(Id));
-    //     dispatch(GetComments(Id))
-    // }, [windowWidth, Id]);
+    useEffect(() => {
+        setScroll(0);
+        const { Id } = route.params;
+        dispatch(GetProductById(Id));
+        dispatch(GetComments(Id))
+    }, [windowWidth, Id]);
 
     useFocusEffect(
         React.useCallback(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { ListItem, Divider, CheckBox, Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const Bag = () => {
   const [count, setCount] = useState(0);
   const [total, setTotal] = useState(0);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [paymentType, setPaymentType] = useState('');
   const [expanded, setExpanded] = useState(false);
 
   const dispatch = useDispatch();
@@ -24,37 +24,39 @@ const Bag = () => {
     dispatch(GetCart());
   };
 
-  const totalCart = () => {
+  const totalCart = useMemo(() => {
     const prices = cartData.cart.map((xd) => {
       return xd.productId.price * xd.productquantity;
     });
 
-    // console.log(cartData.cart.length);
+    console.log(cartData.cart);
 
     const totalVal = prices.reduce((x, y) => {
       return x + y;
     }, 0);
     setTotal(totalVal);
     return totalVal;
-  };
+  },[cartData])
 
   const forChange = (value) => {
-    setSelectedValue(value);
+    setPaymentType(value);
   };
 
   const forSubmit = () => {
-    console.log(selectedValue);
+    cartData.cart.forEach(val => {
+      const { productId, productquantity } = val;
+      console.log({ "products": productId._id, "productPrice": productId.price, "productquantity": productquantity,paymentType:paymentType });
+    })
   };
 
   useEffect(() => {
     dispatch(GetCart())
-    totalCart();
-  }, [cartData]);
+  }, [total]);
 
   useFocusEffect(
     React.useCallback(() => {
       dispatch(GetCart());
-    }, [dispatch])
+    }, [dispatch,total])
   );
 
 
@@ -63,17 +65,13 @@ const Bag = () => {
     setCount(count + 1);
   };
 
-  const forPrevious = () => {
-    setCount(count - 1);
-  };
-
-  const forDis = count === 1 && selectedValue === '';
+  const forDis = count === 1 && paymentType === '';
 
   return (
     <React.Fragment>
       <ScrollView>
         <View style={styles.container}>
-          <View style={{ marginBottom: 20 }}>
+          {count === 0 || count == 1 ? <View style={{ marginBottom: 20 }}>
             <View style={styles.forStep}>
               <Icon name={'numeric-1-circle-outline'} size={40} color={count === 0 ? '#1B9C85' : '#16213E'} />
               <View style={styles.line} />
@@ -86,11 +84,11 @@ const Bag = () => {
               <Text>Payment</Text>
               <Text>Summary</Text>
             </View>
-          </View>
+          </View> : <Text>Ordered</Text>}
 
-          <View>
+          {count === 0 || count == 1 ? <View>
             <Divider width={0.6} color={'#9BABB8'} />
-          </View>
+          </View> : ''}
 
           <View>
             {count === 0 && (
@@ -155,14 +153,14 @@ const Bag = () => {
                     <View>
                       <CheckBox
                         title="Google"
-                        checked={selectedValue === 'Google'}
+                        checked={paymentType === 'Google'}
                         onPress={() => forChange('Google')}
                         checkedIcon="dot-circle-o"
                         uncheckedIcon="circle-o"
                       />
                       <CheckBox
                         title="Net Banking"
-                        checked={selectedValue === 'Net Banking'}
+                        checked={paymentType === 'Net Banking'}
                         onPress={() => forChange('Net Banking')}
                         checkedIcon="dot-circle-o"
                         uncheckedIcon="circle-o"
@@ -197,13 +195,13 @@ const Bag = () => {
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            {count > 0 && (
-              <Text style={{ backgroundColor: 'rgba(111, 202, 186, 1)' }}>order placed</Text>
-            )}
+            {/* {count ===2 && (
+              <Text style={{ backgroundColor: 'rgba(111, 202, 186, 1)' }}>order</Text>
+            )} */}
 
             {(count === 0 || count === 1) && cartData.cart.length > 0 && (
               <View>
-                <Button onPress={forNext} title={`PROCEED TO BUY    Rs${total}`} buttonStyle={{
+                <Button onPress={count === 1 ? (() => { forNext(), forSubmit() }) : forNext} title={`PROCEED TO BUY    Rs${total}`} buttonStyle={{
                   backgroundColor: 'rgba(111, 202, 186, 1)',
                   borderRadius: 5,
                 }}
