@@ -6,6 +6,7 @@ const protectedRoute = require('../Middleware/Middleware')
 const { PostCart, GetCart, DeleteCart } = require('../Controllers/Cart')
 const { PractData } = require('../Controllers/Pract')
 const { PlaceOrder, GetOrder } = require('../Controllers/Order')
+const { addAddress, getAddress, updateAddressById } = require('../Controllers/Address')
 
 
 // router.use(protectedRoute);
@@ -15,20 +16,25 @@ router.get('/product/:id', GetProductById);
 
 //comment
 router.post('/postcomment', postComment);
-router.delete('/deletecomment', deleteCommentById);
-router.patch('/updatecomment', updateCommentById);
+router.delete('/deletecomment', protectedRoute, deleteCommentById);
+router.patch('/updatecomment', protectedRoute, updateCommentById);
 router.get('/getcomment/:id', getAllCommentsForProduct);
 
 //cart
-router.post('/addcart', PostCart);
-router.get('/getcart', GetCart);
-router.delete('/deletecart/:id', DeleteCart);
+router.post('/addcart', protectedRoute, PostCart);
+router.get('/getcart', protectedRoute, GetCart);
+router.delete('/deletecart/:id', protectedRoute, DeleteCart);
 
 //pract
 router.post('/pract', PractData);
 
 //order
-router.post('/placeorders', PlaceOrder);
-router.get('/getorders', GetOrder);
+router.post('/placeorders', protectedRoute, PlaceOrder);
+router.get('/getorders', protectedRoute, GetOrder);
+
+//address
+router.post('/addaddress', protectedRoute, addAddress);
+router.get('/getaddress', protectedRoute, getAddress);
+router.patch('/updateaddress/:id', protectedRoute, updateAddressById);
 
 module.exports = router

@@ -5,7 +5,6 @@ import Favourite from '../Screens/Favourite'
 import Explore from '../Screens/Explore'
 import Bag from '../Screens/Bag'
 import Account from '../Screens/Account'
-import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo';
 import IconX from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconXD from 'react-native-vector-icons/MaterialIcons';

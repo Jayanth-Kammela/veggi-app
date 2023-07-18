@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Dimensions, Image, useWindowDimensions, TouchableOpacity, ScrollView, TextInput, SafeAreaView } from 'react-native'
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetProductById, GetComments, AddCart } from '../Services/Services';
+import { GetProductById, GetComments, AddCart, AddComment } from '../Services/Services';
 import { useFocusEffect } from '@react-navigation/native';
 import IconXC from 'react-native-vector-icons/Feather';
 import { ListItem, Divider } from '@rneui/themed';
@@ -14,12 +14,11 @@ const SingleProduct = () => {
 
     const route = useRoute()
     const { Id } = route.params;
-    // console.log(Id);
 
     const [scroll, setScroll] = useState(0);
     const [count, setCount] = useState(1)
     const [expanded, setExpanded] = useState(false);
-    const [review, setReview] = useState({ rating: 1, comment: '', productId: Id });
+    const [review, setReview] = useState({ rating: 1, comment: '' });
 
     const windowWidth = useWindowDimensions().width;
 
@@ -35,18 +34,16 @@ const SingleProduct = () => {
 
     useEffect(() => {
         setScroll(0);
-        const { Id } = route.params;
         dispatch(GetProductById(Id));
         dispatch(GetComments(Id))
-    }, [windowWidth, Id]);
+    }, [windowWidth]);
 
     useFocusEffect(
         React.useCallback(() => {
             setScroll(0);
-            const { Id } = route.params;
             dispatch(GetProductById(Id));
             dispatch(GetComments(Id))
-        }, [windowWidth,Id])
+        }, [windowWidth, Id])
     );
 
 
@@ -61,7 +58,8 @@ const SingleProduct = () => {
     };
 
     const forPost = async () => {
-        console.log(review);
+        console.log({ rating: review.rating, comment: review.comment, productId: Id });
+        dispatch(AddComment({ rating: review.rating, comment: review.comment, productId: Id }));
     };
 
     const addCart = async () => {

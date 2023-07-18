@@ -4,7 +4,7 @@ const app = express();
 require("dotenv").config();
 const dbConnection = require('./db/dbconnect');
 const productRoute = require('./Routes/ProductRoute')
-const usersRoute = require('./Routes/UserRoute')
+const usersRoute = require('./Routes/UserAuth')
 
 app.use(cors());
 app.use(express.json());

@@ -1,50 +1,62 @@
-import React, { useEffect } from 'react'
-import { ScrollView, TextInput } from 'react-native';
+import React from 'react'
+import { ScrollView } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons';
 import IconX from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from '../Components/Search';
 import Carousel from '../Components/Carousel';
 import Products from '../Components/Products';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Shop = () => {
   const navigation = useNavigation();
 
   return (
     <React.Fragment>
-      <ScrollView>
-        <View>
-
-          <View style={styles.Icon}>
-            <IconX name="fruit-cherries" size={80} color='#25AF39ED' />
-          </View>
-
-          <View style={styles.container}>
-            <IconX name="map-marker" size={28} color='#16213E' />
-            <View style={styles.textContainer}>
-              <Text style={{ fontSize: 18, color: '#001C30' }}>Hyderabad,Telangana</Text>
-            </View>
-          </View>
-
-          <View style={styles.view}>
-            <Search />
-          </View>
-
-          <View style={{ height: 168 }}>
-            <Carousel />
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 14, marginRight: 14 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 22, color: '#001C30' }}>Exclusive Offer</Text>
-            <Text style={{ color: '#25AF39ED', fontSize: 16 }} onPress={() => navigation.navigate('All-Products')}>See all</Text>
-          </View>
-
+      <SafeAreaView style={{ flex: 1, marginBottom: 70 }}>
+        <ScrollView>
           <View>
-            <Products />
+
+            <View style={styles.Icon}>
+              <IconX name="fruit-cherries" size={80} color='#25AF39ED' />
+            </View>
+
+            <View style={styles.container}>
+              <IconX name="map-marker" size={28} color='#16213E' />
+              <View style={styles.textContainer}>
+                <Text style={{ fontSize: 18, color: '#001C30' }}>Hyderabad,Telangana</Text>
+              </View>
+            </View>
+
+            <View style={styles.view}>
+              <Search />
+            </View>
+
+            <View style={{ height: 168 }}>
+              <Carousel />
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 14, marginRight: 14 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 22, color: '#001C30' }}>Exclusive Offer</Text>
+              <Text style={{ color: '#25AF39ED', fontSize: 16 }} onPress={() => navigation.navigate('All-Products')}>See all</Text>
+            </View>
+
+            <View style={{marginBottom:10}}>
+              <Products />
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 14, marginRight: 14,marginTop:10 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 22, color: '#001C30' }}>All Products</Text>
+              <Text style={{ color: '#25AF39ED', fontSize: 16 }} onPress={() => navigation.navigate('All-Products')}>See all</Text>
+            </View>
+
+            <View>
+              <Products num={4} Num={9} />
+            </View>
+
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </React.Fragment>
   )
 }

@@ -9,10 +9,6 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    productPrice: {
-        type: Number,
-        required: true
-    },
     productquantity: {
         type: String,
         required: true
@@ -20,6 +16,14 @@ const OrderSchema = new mongoose.Schema({
     products: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
+    },
+    userId:{
+        type:String,
+        required:true
+    },
+    userDeliveryAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address'
     },
 })
 

@@ -6,7 +6,7 @@ const PostProduct = async (req, res, next) => {
         await data.save()
         return res.status(200).json(data)
     } catch (error) {
-        console.log(error);
+        return res.status(500).json(error);
     }
 }
 
@@ -15,7 +15,7 @@ const GetProduct = async (req, res, next) => {
         const data = await Product.find({})
         return res.status(200).json({whole:data})
     } catch (error) {
-        console.log(error);
+        return res.status(500).json(error);
     }
 }
 
@@ -26,7 +26,7 @@ const GetProductById = async (req, res, next) => {
         const data = await Product.findOne({ _id: id.toString() })
         return res.status(200).json(data)
     } catch (error) {
-        console.log(error);
+        return res.status(500).json(error);
     }
 }
 

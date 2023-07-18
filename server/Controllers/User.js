@@ -1,4 +1,4 @@
-const userModel = require("../Models/User");
+const UserModel = require("../Models/User");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
@@ -8,27 +8,35 @@ const createToken = (_id) => {
 const forLogin = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await userModel.login(email, password);
+        const user = await UserModel.login(email, password);
         const token = createToken(user._id);
-
-        res.status(200).json({ email, token });
+        return res.status(200).json({ email, token });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
     }
 };
 
 const forSignup = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, fullname, gender, mobileNumber } = req.body;
 
     // const salt=bycryt.salt(10)
     // const hash=bycryt.hash(password,salt)
 
     try {
-        const user = await userModel.signup(email, password);
+        const user = await UserModel.signup(email, password, fullname, gender, mobileNumber);
         return res.status(200).json(user);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
     }
 };
 
-module.exports = { forLogin, forSignup };
+const userGet = async (req, res) => {
+    try {
+        const user = await UserModel.find({})
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+}
+
+module.exports = { forLogin, forSignup, userGet };

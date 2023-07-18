@@ -1,33 +1,47 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
-const Schema = mongoose.Schema
 
-const userSchema = new Schema({
-    // username: {
-    //     type: String,
-    //     required: true,
-    //     trim: true,
-    //     unique: true
-    // },
+const userSchema = new mongoose.Schema({
+    fullname: [{
+        firstName: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        lastName: {
+            type: String,
+            required: true,
+            trim: true
+        }
+    }],
+    gender: {
+        type: String,
+        required: true,
+        enum: ["Male", "Female", "Others"],
+    },
     email: {
         type: String,
+        lowercase: true,
         required: true,
         trim: true,
         unique: true
     },
+    mobileNumber: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
     password: {
         type: String,
+        required: true,
         trim: true,
-        required: true
-    },
-    // cryptoToken: { type: String, default: null },
-    // cryptoTokenExp: { type: Date, default: null }
+    }
 })
 
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email, password, fullname, gender, mobileNumber) {
 
-    if (!email || !password) {
+    if (!email || !password || !fullname || !gender || !mobileNumber) {
         throw Error('All fields must be filled')
     }
     if (!validator.isEmail(email)) {
@@ -46,7 +60,7 @@ userSchema.statics.signup = async function (email, password) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const user = await this.create({ email, password: hash })
+    const user = await this.create({ fullname, email, password: hash, gender, mobileNumber })
 
     return user
 }

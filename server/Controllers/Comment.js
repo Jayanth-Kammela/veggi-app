@@ -2,12 +2,18 @@ const Comment = require('../Models/Comment');
 
 const postComment = async (req, res) => {
     const { productId, comment, rating } = req.body;
-    const user_id = req.user
-    console.log(productId, comment, rating, user_id);
+    // const userId = req.user._id.toString();
+
+    // console.log(productId, comment, rating, userId);
     try {
-        const commentBody = new Comment({ user: user_id, productId: productId, comment: comment, rating: rating });
-        await commentBody.save();
-        return res.status(201).json(commentBody);
+        const findComment = await Comment.findOne({ user: '64aeda6532d79a245be01e87' });
+        if (findComment) {
+            return res.status(400).json('you already in commneted')
+        } else {
+            const commentBody = new Comment({ user: '64aeda6532d79a245be01e87', productId: productId, comment: comment, rating: rating });
+            await commentBody.save();
+            return res.status(201).json(commentBody);
+        }
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -15,9 +21,12 @@ const postComment = async (req, res) => {
 
 const getAllCommentsForProduct = async (req, res) => {
     const { id } = req.params
+
+    const user_id = req.user
+    console.log(user_id);
     try {
-        const comments = await Comment.find({ productId: id }).populate('user','email')
-        return res.status(200).json({comments:comments});
+        const comments = await Comment.find({ productId: id }).populate('user', 'email')
+        return res.status(200).json({ comments: comments });
     } catch (error) {
         return res.status(500).json(error);
     }

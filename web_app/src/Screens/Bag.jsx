@@ -36,7 +36,7 @@ const Bag = () => {
     }, 0);
     setTotal(totalVal);
     return totalVal;
-  },[cartData])
+  }, [cartData])
 
   const forChange = (value) => {
     setPaymentType(value);
@@ -45,7 +45,7 @@ const Bag = () => {
   const forSubmit = () => {
     cartData.cart.forEach(val => {
       const { productId, productquantity } = val;
-      console.log({ "products": productId._id, "productPrice": productId.price, "productquantity": productquantity,paymentType:paymentType });
+      console.log({ "products": productId._id, "productPrice": productId.price, "productquantity": productquantity, paymentType: paymentType });
     })
   };
 
@@ -56,7 +56,7 @@ const Bag = () => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(GetCart());
-    }, [dispatch,total])
+    }, [dispatch, total])
   );
 
 
@@ -200,7 +200,7 @@ const Bag = () => {
             )} */}
 
             {(count === 0 || count === 1) && cartData.cart.length > 0 && (
-              <View>
+              <View style={{ marginTop: 12 }}>
                 <Button onPress={count === 1 ? (() => { forNext(), forSubmit() }) : forNext} title={`PROCEED TO BUY    Rs${total}`} buttonStyle={{
                   backgroundColor: 'rgba(111, 202, 186, 1)',
                   borderRadius: 5,
@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
   alignTxt: {
     flex: 1,
     marginLeft: 10,
+    marginTop: 10
   },
   cartProductName: {
     fontWeight: '600',
